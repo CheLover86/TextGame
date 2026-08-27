@@ -1,0 +1,35 @@
+To generate our build system, we do
+cmake -B build
+
+Then to compile:
+cmake --build build
+
+the add_executables are the following:
+
+add_executable(GameExecutable or any name for that manner
+	main.c
+	inventory.c
+	etc....
+)
+
+The C standard should be obvious to you.
+
+the project is 
+
+project(AdventureGame VERSION 1.0 LANGUAGES C)
+
+version is of course what we're working with, and the adventuregame is our title
+
+We also have made an awk script to generate our object.c and object.h files.
+
+Use the makefile we have made using
+
+make
+
+make clean
+
+or, if you want to do it manually
+
+awk -v pass=h -f object.awk object.txt > object.h
+awk -v pass=c1 -f object.awk object.txt > object.h
+awk -v pass=c2 -f object.awk object.txt >> object.h

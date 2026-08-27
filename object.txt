@@ -1,0 +1,279 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include "object.h"
+#include "toggle.h"
+
+#ifndef OBJECT_H
+#define OBJECT_H
+
+typedef struct object {
+	bool       (*condition)(void);
+	const char *description;
+	const char **tags;
+	struct object *location;
+	struct object *destination;
+	struct object *prospect;
+	const char *details;
+	const char *contents;
+	const char *textGo;
+	int weight;
+	int capacity;
+	int health;
+	void (*open)(void);
+	void (*close)(void);
+	void (*lock)(void);
+	void (*unlock)(void);
+} OBJECT;
+
+extern OBJECT objs[];
+
+#endif
+
+- field
+	description "an open field"
+	tags "field"
+	details "A nice quiet place under a clean blue sky."
+	capacity 9999
+
+- cave
+	description "a little cave"
+	tags "cave"
+	details "A dark, swampy chamber of pure blackness."
+	capacity 9999
+
+- town
+	description "a cozy town"
+	tags "town"
+	details "A warm, bustling town with plenty to offer."
+	capacity 9999
+
+- cellar
+	description "a creepy cellar"
+	tags "cellar"
+	details "An abandonded cellar in the middle of nowhere. There seems to be dust on the doors."
+	capacity 9999
+
+- silver
+	description "a silver coin"
+	tags "silver", "coin", "silver coin"
+	location field
+	details "There is a strange symbol on the obverse."
+	weight 1
+
+- gold
+	description "a gold coin"
+	tags "gold", "coin", "gold coin"
+	location openBox
+	details "A shiny coin thats a priceless artifect in these parts."
+	weight 1
+
+- guard
+	description "a burly guard"
+	tags "guard", "burly guard"
+	location field
+	details "This guard seems to be a really big fellow."
+	contents "He has"
+	health 100
+	capacity 20
+
+- wine
+	description "some ancient wine"
+	tags "wine", "ancient wine"
+	location cellar
+	details "The bottle seems to trace back centuries."
+	weight 1
+
+- cobwebs
+	description "some dirty cobwebs"
+	tags "cobwebs", "dirty cobwebs"
+	location cellar
+	details "Covered with spiders, these cobwebs have lasted the test of time."
+	weight 1
+
+- shopkeeper
+	description "a friendly shopkeeper"
+	tags "shopkeeper", "friendly shopkeeper"
+	location town
+	details "He's ready to help you out whenever the time calls."
+	contents "He has"
+	health 9999
+	capacity 100
+
+- player
+	description "yourself"
+	tags "yourself"
+	location field
+	details "There are no mirrors to observe yourself."
+	contents "You have"
+	health 100
+	capacity 20
+
+- intoCave
+	condition { return guard->health == 0 || silver->location == guard; }
+	description "a cave entrance to the east"
+	tags "east", "enterCave"
+	location field
+	destination cave
+	details "The entrance is a small sliver of darkness among the rocks."
+	textGo "You walk into the cave."
+	open isAlreadyOpen
+
+- intoCaveBlocked
+	condition { return guard->health > 0 && silver->location != guard; }
+	description "a cave entrance to the east"
+	tags "east", "enterCave"
+	location field
+	prospect cave
+	details "The entrance is a small sliver of darkness among the rocks."
+	textGo "The guard blocks your way into the depths below."
+	open isAlreadyOpen
+
+- exitCave
+	description "an exit to the west"
+	tags "west", "exitOfCave"
+	location cave
+	destination field
+	details "Sunlight pours in through an opening in the cave's walls."
+	textGo "You walk out of the cave."
+	open isAlreadyOpen
+
+- intoCellar
+	condition { return keyForBox->location == player; }
+	description "an overgrown path to a cellar to your north"
+	tags "north", "enterCellar"
+	location field
+	destination cellar
+	details "A path filled with grass; seems like nobody has been here for years."
+	textGo "You enter the cellar."	
+	open isAlreadyOpen
+
+- intoCellarBlocked
+	condition { return keyForBox->location != player; }
+	description "an overgrown path to a cellar to your north"
+	tags "north", "enterCellar"
+	location field
+	prospect cellar
+	details "A path filled with grass; seems like nobody has been here for years."
+	textGo "The door is locked."	
+	open isAlreadyOpen
+
+- exitCellar
+	description "the dusty doors to your south"
+	tags "south", "exitOfCellar"
+	location cellar
+	destination field
+	details "Outside, the sun beams into the ashy cellar."
+	textGo "You walk out of the cellar."
+	open isAlreadyOpen
+
+- intoTown
+	condition { return guard->health == 0 || silver->location == guard; }
+	description "a path to a town to the west"
+	tags "west", "enterTown"
+	location field
+	destination town
+	details "The fence enforces the town's border"
+	textGo "You walk into the town."
+	open isAlreadyOpen
+	
+- intoTownBlocked
+	condition { return guard->health > 0 && silver->location != guard; }
+	description "a path to a town to the west"
+	tags "west", "enterTown"
+	location field
+	prospect town
+	details "The fence enforces the town's border"
+	textGo "You're not allowed in by the watchtowers."
+	open isAlreadyOpen
+
+- exitTown
+	description "the town's border"
+	tags "east", "exitTown"
+	location town
+	destination field
+	details "The town's border is right in front of you, seperating yourself from the outside world."
+	textGo "You walk out of the town."
+	open isAlreadyOpen
+
+- backroom
+	description "a backroom"
+	tags "backroom"
+	details "The room is incredibly dusty and messy.\n"
+	capacity 9999
+
+- openDoorToBackroom
+	description "an open door to the south"
+	tags "south", "door", "doorway"
+	destination backroom
+	details "The door is open."
+	textGo "You walk through the door into a backroom."
+	open isAlreadyOpen
+	close toggleDoorToBackroom
+
+- closedDoorToBackroom
+	description "a closed door to the south"
+	tags "south", "door", "doorway"
+	location cave
+	prospect backroom
+	details	"The door is closed."
+	textGo "The door is closed."
+	open toggleDoorToBackroom
+	close isAlreadyClosed
+
+- openDoorToCave
+	description "an open door to the north"
+	tags "north", "door", "doorway"
+	destination cave
+	details "The door is open."
+	textGo "You walk through the door into the cave."
+	open isAlreadyOpen
+	close toggleDoorToCave
+
+- closedDoorToCave
+	description "a closed door to the north"
+	tags "north", "door", "doorway"
+	location backroom
+	prospect cave
+	details "The door is closed"
+	textGo "The door is closed"
+	open toggleDoorToCave
+	close isAlreadyClosed
+
+- openBox
+	description "a wooden box"
+	tags "box", "wooden box"
+	details "The box is open."
+	weight 5
+	capacity 10
+	open isAlreadyOpen
+	close toggleBox
+	lock isStillOpen
+	unlock isAlreadyOpen
+
+- closedBox
+	description "a wooden box"
+	tags "box", "wooden box"
+	details "The box is closed."
+	weight 5
+	open toggleBox
+	close isAlreadyClosed
+	lock toggleBoxLock
+	unlock isAlreadyUnlocked
+
+- lockedBox
+	description "a wooden box"
+	tags "box", "wooden box"
+	location backroom
+	details "The box is closed."
+	weight 5
+	open isStillLocked
+	close isAlreadyClosed
+	lock isAlreadyLocked
+	unlock toggleBoxLock
+
+- keyForBox
+	description "a tiny key"
+	tags "key", "tiny key"
+	location cave
+	details "The key is really small and shiny."
+	weight 1
