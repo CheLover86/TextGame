@@ -2,11 +2,12 @@
 #include <stdbool.h>
 #include "object.h"
 #include "misc.h"
+#include "match.h"
 #include "noun.h"
 #include "move.h"
 
-void executeGet(const char *noun) {
-	OBJECT *obj = getVisible("what you want to get", noun);
+bool executeGet(void) {
+	OBJECT *obj = getVisible("what you want to get", params[0]);
 	switch (getDistance(player, obj)) {
 		case distSelf:
 			printf("You shouldn't be doing that to yourself. \n");
@@ -31,22 +32,27 @@ void executeGet(const char *noun) {
 				moveObject(obj, player);
 			}
 	}
+	return true;
 }
 
-void executeDrop(const char *noun) {
-	moveObject(getPossession(player, "drop", noun), player->location);
+bool executeDrop(void) {
+	moveObject(getPossession(player, "drop", params[0]), player->location);
+	return true;
 }
 
-void executeAsk(const char *noun) {
-	moveObject(getPossession(actorHere(), "ask", noun), player);
+bool executeAsk(void) {
+	moveObject(getPossession(actorHere(), "ask", params[0]), player);
+	return true;
 }
 
-void executeGive(const char *noun) {
-	moveObject(getPossession(player, "give", noun), actorHere());
+bool executeGive(void) {
+	moveObject(getPossession(player, "give", params[0]), actorHere());
+	return true;
 }
 
-void executeInventory(void) {
+bool executeInventory(void) {
 	if (listObjectsAtLocation(player) == 0) {
-			printf("You are empty-handed.\n");
-		}
+		printf("You are empty-handed.\n");
+	}
+	return true;
 }
