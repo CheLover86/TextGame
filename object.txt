@@ -19,6 +19,7 @@ typedef struct object {
 	int weight;
 	int capacity;
 	int health;
+	int light;
 	void (*open)(void);
 	void (*close)(void);
 	void (*lock)(void);
@@ -34,6 +35,7 @@ extern OBJECT objs[];
 	tags "field"
 	details "A nice quiet place under a clean blue sky."
 	capacity 9999
+	light 100
 
 - cave
 	description "a little cave"
@@ -46,6 +48,7 @@ extern OBJECT objs[];
 	tags "town"
 	details "A warm, bustling town with plenty to offer."
 	capacity 9999
+	light 100
 
 - cellar
 	description "a creepy cellar"
@@ -277,3 +280,17 @@ extern OBJECT objs[];
 	location cave
 	details "The key is really small and shiny."
 	weight 1
+
+- lampOff
+	description "a lamp"
+	tags "lamp"
+	location field
+	details "The lamp is off."
+	weight 5
+
+- lampOn
+	description "a lamp"
+	tags "lamp"
+	details "The lamp is on."
+	weight 5
+	light 100
