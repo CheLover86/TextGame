@@ -16,6 +16,7 @@ typedef struct object {
 	const char *details;
 	const char *contents;
 	const char *textGo;
+	const char *gossip;
 	int weight;
 	int capacity;
 	int health;
@@ -29,11 +30,15 @@ typedef struct object {
 extern OBJECT objs[];
 
 #endif
+- gossipEWNS
+	tags "east", "west", "north", "south"
+	gossip "It's just a compass direction."
 
 - field
 	description "an open field"
 	tags "field"
 	details "A nice quiet place under a clean blue sky."
+	gossip "A lot of tourist love to go here."
 	capacity 9999
 	light 100
 
@@ -41,12 +46,14 @@ extern OBJECT objs[];
 	description "a little cave"
 	tags "cave"
 	details "A dark, swampy chamber of pure blackness."
+	gossip "It's dark in there.... make sure to bring a lamp!"
 	capacity 9999
 
 - town
 	description "a cozy town"
 	tags "town"
 	details "A warm, bustling town with plenty to offer."
+	gossip "Plenty of villagers love to gossip there."
 	capacity 9999
 	light 100
 
@@ -54,6 +61,7 @@ extern OBJECT objs[];
 	description "a creepy cellar"
 	tags "cellar"
 	details "An abandonded cellar in the middle of nowhere. There seems to be dust on the doors."
+	gossip "No one has gone there in years; it's long forgotten."
 	capacity 9999
 
 - silver
@@ -61,6 +69,7 @@ extern OBJECT objs[];
 	tags "silver", "coin", "silver coin"
 	location field
 	details "There is a strange symbol on the obverse."
+	gossip "Money makes the world go round..."
 	weight 1
 
 - gold
@@ -68,6 +77,7 @@ extern OBJECT objs[];
 	tags "gold", "coin", "gold coin"
 	location openBox
 	details "A shiny coin thats a priceless artifect in these parts."
+	gossip "Money makes the world go round..."
 	weight 1
 
 - guard
@@ -75,6 +85,7 @@ extern OBJECT objs[];
 	tags "guard", "burly guard"
 	location field
 	details "This guard seems to be a really big fellow."
+	gossip "Easy to bribe."
 	contents "He has"
 	health 100
 	capacity 20
@@ -84,6 +95,7 @@ extern OBJECT objs[];
 	tags "wine", "ancient wine"
 	location cellar
 	details "The bottle seems to trace back centuries."
+	gossip "I haven't seen a bottle like that in forever..."
 	weight 1
 
 - cobwebs
@@ -91,6 +103,7 @@ extern OBJECT objs[];
 	tags "cobwebs", "dirty cobwebs"
 	location cellar
 	details "Covered with spiders, these cobwebs have lasted the test of time."
+	gossip "Why would you bring me this?"
 	weight 1
 
 - shopkeeper
@@ -98,6 +111,7 @@ extern OBJECT objs[];
 	tags "shopkeeper", "friendly shopkeeper"
 	location town
 	details "He's ready to help you out whenever the time calls."
+	gossip "He'll help you every step of the way."
 	contents "He has"
 	health 9999
 	capacity 100
@@ -107,6 +121,7 @@ extern OBJECT objs[];
 	tags "yourself"
 	location field
 	details "There are no mirrors to observe yourself."
+	gossip "You're not from around here, are you?"
 	contents "You have"
 	health 100
 	capacity 20
@@ -202,6 +217,7 @@ extern OBJECT objs[];
 	description "a backroom"
 	tags "backroom"
 	details "The room is incredibly dusty and messy.\n"
+	gossip "There is something of value to be found there."
 	capacity 9999
 
 - openDoorToBackroom
@@ -246,6 +262,7 @@ extern OBJECT objs[];
 	description "a wooden box"
 	tags "box", "wooden box"
 	details "The box is open."
+	gossip "You need a key to open it."
 	weight 5
 	capacity 10
 	open isAlreadyOpen
@@ -279,6 +296,7 @@ extern OBJECT objs[];
 	tags "key", "tiny key"
 	location cave
 	details "The key is really small and shiny."
+	gossip "A small key opens a small lock."
 	weight 1
 
 - lampOff
@@ -286,6 +304,7 @@ extern OBJECT objs[];
 	tags "lamp"
 	location field
 	details "The lamp is off."
+	gossip "Essential in dark areas."
 	weight 5
 
 - lampOn

@@ -72,3 +72,11 @@ OBJECT *getPossession(OBJECT *from, const char *verb, const char *noun) {
 	}
 	return obj;
 }
+
+OBJECT *getTopic(const char *noun) {
+	OBJECT *obj;
+	for (obj = objs; obj < endOfObjs; obj++) {
+		if (objectHasTag(obj, noun)) return obj;
+	}
+	return NULL;
+}
