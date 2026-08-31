@@ -24,6 +24,8 @@ BEGIN {
 	prop["capacity"] = "0";
 	prop["health"] = "0";
 	prop["light"] = "0";
+	prop["impact"] = "0";
+	prop["trust"] = "0";
 	prop["open"] = "cannotBeOpened";
 	prop["close"] = "cannotBeClosed";
 	prop["lock"] = "cannotBeLocked";
@@ -50,14 +52,11 @@ obj && /^[\t]+[a-z]/ {
 }
 
 END {
-	outputRecord("");
+	outputRecord("\n}, *player = nobody;");
 	if (pass == "h") {
 		print "\n#define endOfObjs\t(objs + " count ")";
 		print "\n#define validObject(obj)\t((obj) != NULL && (*(obj)->condition)())";
 	}
-	else if (pass == "c2") {
-		print "};";
-	}	
 }
 
 function outputRecord(separator) {
@@ -84,6 +83,8 @@ function outputRecord(separator) {
 			print "\t\t" prop["capacity"] ",";
 			print "\t\t" prop["health"] ",";
 			print "\t\t" prop["light"] ",";
+			print "\t\t" prop["impact"] ",";
+			print "\t\t" prop["trust"] ",";
 			print "\t\t" prop["open"] ",";
 			print "\t\t" prop["close"] ",";
 			print "\t\t" prop["lock"] ",";

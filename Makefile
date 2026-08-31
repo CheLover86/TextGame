@@ -1,7 +1,7 @@
 all: lilcave src.zip
 
-C = talk.c expand.c onoff.c inventory2.c match.c openclose.c reach.c toggle.c object.c misc.c location.c move.c inventory.c parsexec.c noun.c main.c
-H = talk.h expand.h onoff.h inventory2.h match.h openclose.h reach.h toggle.h object.h misc.h location.h move.h inventory.h parsexec.h noun.h
+C = social.c turn.c damage.c attack.c talk.c expand.c onoff.c inventory2.c match.c openclose.c reach.c toggle.c object.c misc.c location.c move.c inventory.c parsexec.c noun.c main.c
+H = social.h turn.h damage.h attack.h talk.h expand.h onoff.h inventory2.h match.h openclose.h reach.h toggle.h object.h misc.h location.h move.h inventory.h parsexec.h noun.h
 
 lilcave: $(C) $(H)
 	gcc -Wall -Wextra -Wpedantic -Werror $(C) -o $@

@@ -10,25 +10,32 @@
 #include "openclose.h"
 #include "onoff.h"
 #include "talk.h"
+#include "attack.h"
+#include "social.h"
 
 typedef struct {
 	const char *pattern;
-	bool (*function)(void);
+	int (*function)(void);
 } COMMAND;
 
-static bool executeQuit(void) {
-	return false;
+static int executeQuit(void) {
+	return -1;
 }
 
-static bool executeNoMatch(void) {
+static int executeNoMatch(void) {
 	const char *src = *params;
 	int len;
 	for (len = 0; src[len] != '\0' && !isspace(src[len]); len++);
 	if (len > 0) printf("I don't know how to '%.*s'.\n", len, src);
-	return true;
+	return 0; 
 }
 
-bool parseAndExecute(const char *input) {
+static int executeWait(void) {
+	printf("Some time passes...\n");
+	return 1;	
+}
+
+int parseAndExecute(const char *input) {
 	static const COMMAND commands[] = {
 		{"quit"		, executeQuit},
 		{"look"		, executeLookAround},
@@ -54,12 +61,20 @@ bool parseAndExecute(const char *input) {
 		{"unlock A"	, executeUnlock},
 		{"turn on A"	, executeTurnOn},
 		{"turn off A"	, executeTurnOff},
-		{"turn A off"	, executeTurnOn},
+		{"turn A on"	, executeTurnOn},
 		{"turn A off"	, executeTurnOff},
 		{"talk with B about A"	, executeTalkTo},
 		{"talk about A with B"	, executeTalkTo},
 		{"talk about A"		, executeTalk},
 		{"talk A"	, executeTalk},
+		{"attack with B"	, executeAttack},
+		{"attack A with B"	, executeAttack},
+		{"attack A"	, executeAttack},
+		{"wait"		, executeWait},
+		{"play A"	, executePlay},
+		{"emote A"	, executeEmote},
+		{"say A"	, executeSay},
+		{"Whisper to B A"	, executeWhisper},
 		{"A"		, executeNoMatch}
 	};
 	const COMMAND *cmd;

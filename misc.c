@@ -68,7 +68,7 @@ int listObjectsAtLocation(OBJECT *location) {
 	for (obj = objs; obj < endOfObjs; obj++) {
 		if (obj != player && isHolding(location, obj)) {
 			if (count++ == 0) {
-				printf("%s:\n", location->contents);
+				printf("%s:\n", location == player ? "You have" : location->contents);
 			}
 			printf("%s\n", obj->description);
 		}
